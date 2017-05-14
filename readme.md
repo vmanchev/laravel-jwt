@@ -2,7 +2,7 @@
 
 This project is based on https://github.com/tymondesigns/jwt-auth and the tutorial found at https://www.sitepoint.com/how-to-build-an-api-only-jwt-powered-laravel-app/
 
-I did few changes to make it works with Laravel 5.x and to use is as demo backend for my [https://github.com/vmanchev/ionic3-seed-jwt](Ionic3 seed project with JWT support)
+I did few changes to make it works with Laravel 5.x and to use is as demo backend for my [Ionic3 seed project with JWT support](https://github.com/vmanchev/ionic3-seed-jwt)
 
 
 ### Users endpoints
