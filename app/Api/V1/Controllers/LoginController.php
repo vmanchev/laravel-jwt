@@ -30,7 +30,7 @@ class LoginController extends Controller
             ->json([
                 'status' => 'ok',
                 'token' => $token,
-                'user' => $JWTAuth->parseToken()->authenticate($token)
+                'user' => $JWTAuth->toUser($token)
             ]);
     }
 }
