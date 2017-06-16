@@ -24,9 +24,34 @@ $api->version('v1', function (Router $api) {
     $api->get('refresh', [
         'middleware' => 'jwt.refresh',
         function() {
-          return response()->json([
-                      'message' => 'By accessing this endpoint, you can refresh your access token at each request. Check out this response headers!'
-          ]);
+
+            $token = JWTAuth::getToken();
+
+     if(!$token){
+      $Err['status']='error';
+      $Err['msg']='There is no token';
+      return response()
+      ->json($Err, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);
+
+      }
+
+      try{
+          $token = JWTAuth::refresh($token);
+
+    }catch (JWTException $e) {
+      $ERR['status']='error';
+      $ERR['MSG']= "the was erorr on you token ";
+      return response()
+      ->json($ERR, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);
+
+              }
+
+       $Sucss['status']='success';
+       $Sucss['token']= $token;
+       return response()
+      ->json($Sucss, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);
+
+          
         }
     ]);
     
