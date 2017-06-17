@@ -1,6 +1,8 @@
 <?php
 
 use Dingo\Api\Routing\Router;
+use Illuminate\Http\Request;
+use App\Http\Requests;
 
 /** @var Router $api */
 $api = app(Router::class);
@@ -21,18 +23,39 @@ $api->version('v1', function (Router $api) {
       ]);
     });
 
-    $api->get('refresh', [
-        'middleware' => 'jwt.refresh',
-        function() {
-          return response()->json([
-                      'message' => 'By accessing this endpoint, you can refresh your access token at each request. Check out this response headers!'
-          ]);
-        }
-    ]);
-    
     $api->resource('books', 'App\Api\V1\Controllers\BookController');
 
   });
+
+  $api->get('refresh', function(Request $Request) {
+    $input=$Request->all();
+        $token = $input['Token'];
+
+   if(!$token){
+    $Err['status']='error';
+    $Err['msg']='There is no token';
+    return response()
+    ->json($Err, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);
+
+    }
+
+    try{
+        $token = JWTAuth::refresh($token);
+
+  }catch (JWTException $e) {
+    $ERR['status']='error';
+    $ERR['MSG']= "the was erorr on you token ";
+    return response()
+    ->json($ERR, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);
+
+            }
+
+     $Sucss['status']='success';
+     $Sucss['token']= $token;
+     return response()
+    ->json($Sucss, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);
+
+      });
 
   $api->get('hello', function() {
     return response()->json([
