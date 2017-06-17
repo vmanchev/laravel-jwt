@@ -27,7 +27,7 @@ $api->version('v1', function (Router $api) {
 
   });
 
-  $api->post('refresh', function(Request $Request) {
+  $api->get('refresh', function(Request $Request) {
     $input=$Request->all();
         $token = $input['Token'];
 
